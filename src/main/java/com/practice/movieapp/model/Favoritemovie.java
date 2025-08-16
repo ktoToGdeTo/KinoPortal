@@ -9,10 +9,10 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
-@Table(name = "favoriteactor")
-public class Favoriteactor {
+@Table(name = "favoritemovie")
+public class Favoritemovie {
     @EmbeddedId
-    private FavoriteactorId id;
+    private FavoritemovieId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -20,10 +20,10 @@ public class Favoriteactor {
     @JoinColumn(name = "user_id", nullable = false)
     private Userportal userportal;
 
-    @MapsId("actorId")
+    @MapsId("movieId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "actor_id", nullable = false)
-    private Actor actor;
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
 
 }

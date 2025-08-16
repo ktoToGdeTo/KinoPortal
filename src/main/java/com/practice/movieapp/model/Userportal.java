@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -29,8 +30,10 @@ public class Userportal implements UserDetails {
     private Date birthdate;
 
     @Column(name = "createddate")
-    private Date createddate;
+    private LocalDateTime createddate;
 
+    @OneToMany(mappedBy = "userportal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Favoritemovie> favoritesmovie = new ArrayList<Favoritemovie>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

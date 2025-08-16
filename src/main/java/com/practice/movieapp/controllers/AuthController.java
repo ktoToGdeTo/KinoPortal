@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
@@ -35,8 +39,14 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@ModelAttribute("user") Userportal user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreateddate(LocalDateTime.now());
         userService.registerUser(user);
         return "redirect:/login";
+    }
+
+    @PostMapping("/logout")
+    public String logout(){
+        return "redirect:/";
 
     }
 

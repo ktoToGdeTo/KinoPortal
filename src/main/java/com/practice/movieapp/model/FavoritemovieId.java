@@ -12,26 +12,25 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class FavoriteactorId implements Serializable {
-    private static final long serialVersionUID = -6197140395142819661L;
-    @Column(name = "userid", nullable = false)
+public class FavoritemovieId implements Serializable {
+    @Column(name = "userId", nullable = false)
     private Integer userId;
 
-    @Column(name = "actorid", nullable = false)
-    private Integer actorId;
+    @Column(name = "movieId", nullable = false)
+    private Integer movieId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        FavoriteactorId entity = (FavoriteactorId) o;
-        return Objects.equals(this.actorId, entity.actorId) &&
+        FavoritemovieId entity = (FavoritemovieId) o;
+        return Objects.equals(this.movieId, entity.movieId) &&
                 Objects.equals(this.userId, entity.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(actorId, userId);
+        return Objects.hash(movieId, userId);
     }
 
 }

@@ -6,14 +6,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 </head>
 <body>
+<div th:replace="~{navbar::navigation}"> </div>
 
-<h2>Login</h2>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <input type="text" th:field="*{username}" placeholder="Username" required> <br>
-    <input type="password" th:field="*{password}" placeholder="Password" required> <br>
-    <button type="submit">Register</button>
-</form>
 
+<div class="card text-center mx-auto" style="width: 18rem;">
+    <div class="card-body">
+        <h2 class="card-title mb-4">Регистрация</h2>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <input type="text" th:field="*{username}" placeholder="Имя пользователя" required class="form-control"> <br>
+            <input type="password" th:field="*{password}" placeholder="Пароль" required class="form-control"> <br>
+            <input type="date" th:field="*{birthdate}" placeholder="Дата рождения" required class="form-control"> <br>
+            <button type="submit" class="btn btn-primary mb-4">Зарегистрироваться</button>
+            <p class="text-muted fst-italic">Уже есть аккаунт? <a th:href="@{/login}">Войти!</a></p>
+        </form>
+    </div>
 
 </body>
 </html>

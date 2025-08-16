@@ -27,10 +27,16 @@ public class MovieServiceImpl implements MovieService {
 
 
     @Override
-    public MovieDto getMovieById(Long movieId) {
+    public MovieDto getMovieDtoById(Long movieId) {
         Movie foundMovie =  movieRepository.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundExcepetion("Movie with ID " + movieId + " not found."));
         return MovieMapper.mapToMovieDto(foundMovie);
+    }
+
+    @Override
+    public Movie getMovieById(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new ResourceNotFoundExcepetion("Movie with ID " + movieId + " not found."));
     }
 
 

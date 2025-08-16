@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface MovieService {
 
-    MovieDto getMovieById(Long movieId);
+    MovieDto getMovieDtoById(Long movieId);
+
+    Movie getMovieById(Long movieId);
 
     List<MovieDto> getAllMovies();
 

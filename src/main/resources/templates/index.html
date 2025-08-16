@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Kinoportal</title>
@@ -7,28 +7,8 @@
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary" style="margin-bottom: 45px;" data-bs-theme="light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <img src="/images/cinema.png" width="45px" class="d-inline-block align-text-left"/>
-            <span style="margin-left: 20px;">Кинопортал</span>
-        </a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/movies">Фильмы</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/actors">Актеры</a>
-                </li>
-            </ul>
-        </div>
-        <form th:action="@{/search}" method="get" class="d-flex" >
-            <input th:text="${text}" class="form-control me-2" type="search" name="text" placeholder="Search movie..." aria-label="Search movie..."/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+
+<div th:replace="~{navbar::navigation}"> </div>
 <div class="container-fluid p-3 position-absolute top-50 start-50 translate-middle">
     <div class="text-center largeText" >
         <h1>Добро пожаловать на Кинопортал!</h1>

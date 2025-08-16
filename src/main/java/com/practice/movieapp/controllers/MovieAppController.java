@@ -4,16 +4,19 @@ import com.practice.movieapp.dto.ActorDto;
 import com.practice.movieapp.dto.MovieDto;
 import com.practice.movieapp.model.Actorlist;
 import com.practice.movieapp.model.Movie;
+import com.practice.movieapp.model.Userportal;
 import com.practice.movieapp.service.ActorListService;
 import com.practice.movieapp.service.ActorService;
 import com.practice.movieapp.service.MovieService;
+import com.practice.movieapp.service.impl.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,9 +27,12 @@ public class MovieAppController {
     private final MovieService movieService;
     private final ActorService actorService;
     private final ActorListService actorListService;
+    private final UserService userService;
 
     @GetMapping("/")
-    public String index() { return "index"; }
+    public String index() {
+        return "index";
+    }
 
     @GetMapping("/search")
     public String search(@RequestParam("text") String text, Model model){
@@ -52,20 +58,22 @@ public class MovieAppController {
         return "actors";
     }
 
-//    @PostMapping("/addMovie")
-//    public ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto){
-//        MovieDto savedMovie = movieService.addMovie(movieDto);
-//        return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
-//    }
 
     @GetMapping(value = "/movies/{id}")
     public String movieById(@PathVariable(name="id") Long id, Model model){
-        MovieDto movie = movieService.getMovieById(id);
-        model.addAttribute("movie", movie);
+
+        Movie movie = movieService.getMovieById(id);
+        Userportal user = getCurrentUser();
+
+        boolean isFav = false;
+
+
+        MovieDto movieDto = movieService.getMovieDtoById(id);
+        model.addAttribute("movie", movieDto);
         List<Actorlist> roles = actorListService.getActorsByMovieId(id);
         model.addAttribute("roles", roles);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        model.addAttribute("dateRelease", sdf.format(movie.getDateRelease()));
+        model.addAttribute("dateRelease", sdf.format(movieDto.getDateRelease()));
         return "moviePage";
     }
 
@@ -80,4 +88,20 @@ public class MovieAppController {
         return "actorPage";
     }
 
+
+
+    private Userportal getCurrentUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userService.loadUserByUsername(auth.getName());
+    }
+
+//    @PostMapping(value = "/actors/{id}/toggle")
+//    public String toggleFav(
+//            @PathVariable(name = "id") Long id,
+//            Authentication auth,
+//            RedirectAttributes redirectAttributes)
+//    {
+//        Userportal user = userService.loadUserByUsername(auth.getName());
+//        MovieDto movie = movieService.getMovieById(id);
+//    }
 }

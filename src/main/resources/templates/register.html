@@ -20,7 +20,7 @@
             <input type="text" th:field="*{username}" placeholder="Имя пользователя" required class="form-control"> <br>
             <input type="password" th:field="*{password}" placeholder="Пароль" required class="form-control"> <br>
             <input type="date" th:field="*{birthdate}" placeholder="Дата рождения" required class="form-control"> <br>
-            <button type="submit" class="btn btn-primary mb-4">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-primary mb-4 w-100">Зарегистрироваться</button>
             <p class="text-muted fst-italic">Уже есть аккаунт? <a th:href="@{/login}">Войти!</a></p>
         </form>
     </div>

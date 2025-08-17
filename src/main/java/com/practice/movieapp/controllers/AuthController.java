@@ -31,7 +31,7 @@ public class AuthController {
     @GetMapping("/login")
     public String login(@RequestParam(value="error", required = false) String error,
                         Model model){
-        if(error != null) model.addAttribute("error", "Неверный пароль. Повторите попытку.");
+        if(error != null) model.addAttribute("error", "Неверный пароль или такого пользователя не существует. Повторите попытку.");
         return "login";
     }
 

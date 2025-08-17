@@ -8,22 +8,38 @@
 </head>
 <body>
     <div th:replace="~{navbar::navigation}"></div>
-    <p> Привет, <h2 sec:authentication="name"></h2></p>
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+            <div class="row d-flex justify-content-between mb-5">
+                <div class="col-10">
+                    <h3> Привет, <span sec:authentication="name"></span></h3>
+                </div>
+                <div class="col-5" th:if="${not #lists.isEmpty(favoriteMovies)}">
+                    <h1>Любимые фильмы:</h1>
+                    <ul th:unless="${listIsEmpty}" class="list-group list-group-flush">
+                        <li th:each="item : ${favoriteMovies}" class="list-group-item">
+                            <a th:href="@{/movies/{id}(id=${item.movie.movieId})}" th:text="${item.movie.title}"
+                               class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-5" th:if="${not #lists.isEmpty(favoriteActors)}">
+                    <h1>Любимые актеры:</h1>
+                    <ul class="list-group list-group-flush">
+                        <li th:each="item : ${favoriteActors}" class="list-group-item">
+                            <a th:href="@{/actors/{id}(id=${item.actor.actorId})}" th:text="${item.actor.fullname}"
+                               class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
-    <ul th:if="${not #lists.isEmpty(favoriteMovies)}" class="list-group list-group-flush">
-        <h1>Любимые фильмы:</h1>
-        <li th:each="item : ${favoriteMovies}" class="list-group-item">
-            <a th:href="@{/movies/{id}(id=${item.movie.movieId})}"  th:text="${item.movie.title}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
-        </li>
-    </ul>
-
-    <ul th:if="${not #lists.isEmpty(favoriteActors)}" class="list-group list-group-flush">
-        <h1>Любимые актеры:</h1>
-        <li th:each="item : ${favoriteActors}" class="list-group-item">
-            <a th:href="@{/actors/{id}(id=${item.actor.actorId})}"  th:text="${item.actor.fullname}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
-        </li>
-    </ul>
 
 </body>
 </html>

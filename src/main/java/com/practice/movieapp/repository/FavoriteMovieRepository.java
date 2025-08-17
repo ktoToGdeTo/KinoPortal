@@ -11,4 +11,8 @@ public interface FavoriteMovieRepository extends JpaRepository<Favoritemovie, Fa
     @Query("SELECT fm FROM Favoritemovie fm where fm.userportal.id = :userId")
     List<Favoritemovie> findAllFavMoviesByUserId(Long userId);
 
+    boolean existsActorByUserportal_IdAndMovie_MovieId(Long userId, Long actorId);
+
+    void deleteByUserportal_IdAndMovie_MovieId(Long userId, Long movieId);
+
 }

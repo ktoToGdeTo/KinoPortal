@@ -14,10 +14,10 @@ import java.util.Objects;
 @Embeddable
 public class FavoritemovieId implements Serializable {
     @Column(name = "userId", nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "movieId", nullable = false)
-    private Integer movieId;
+    private Long movieId;
 
     @Override
     public boolean equals(Object o) {

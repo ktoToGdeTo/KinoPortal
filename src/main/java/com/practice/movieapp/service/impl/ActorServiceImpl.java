@@ -23,9 +23,14 @@ public class ActorServiceImpl implements ActorService {
 
     private final ActorRepository actorRepository;
 
+    @Override
+    public Actor getActorById(Long actorId){
+        return actorRepository.findById(actorId)
+                .orElseThrow(() -> new ResourceNotFoundExcepetion("Actor with ID " + actorId + " not found."));
+    }
 
     @Override
-    public ActorDto getActorById(Long actorId) {
+    public ActorDto getActorDtoById(Long actorId) {
         Actor foundActor =  actorRepository.findById(actorId)
                 .orElseThrow(() -> new ResourceNotFoundExcepetion("Actor with ID " + actorId + " not found."));
         return ActorMapper.mapToActorDto(foundActor);
@@ -33,7 +38,7 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public List<ActorDto> getAllActors() {
-        List<Actor> actors = actorRepository.findAll();
+        List<Actor> actors = actorRepository.findAllByOrderByFullnameAsc();
         return actors.stream().map((actor) -> ActorMapper.mapToActorDto(actor))
                 .collect(Collectors.toList());
     }

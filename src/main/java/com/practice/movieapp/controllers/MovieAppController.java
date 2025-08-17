@@ -2,9 +2,7 @@ package com.practice.movieapp.controllers;
 
 import com.practice.movieapp.dto.ActorDto;
 import com.practice.movieapp.dto.MovieDto;
-import com.practice.movieapp.model.Actorlist;
-import com.practice.movieapp.model.Movie;
-import com.practice.movieapp.model.Userportal;
+import com.practice.movieapp.model.*;
 import com.practice.movieapp.service.ActorListService;
 import com.practice.movieapp.service.ActorService;
 import com.practice.movieapp.service.MovieService;
@@ -15,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -62,14 +61,19 @@ public class MovieAppController {
     @GetMapping(value = "/movies/{id}")
     public String movieById(@PathVariable(name="id") Long id, Model model){
 
-        Movie movie = movieService.getMovieById(id);
+        boolean check = false;
         Userportal user = getCurrentUser();
+        if (user != null) {
+            check = userService.isFavoriteMovie(user.getId(), id);
+        }
 
-        boolean isFav = false;
-
+        model.addAttribute("isFavorite", check);
 
         MovieDto movieDto = movieService.getMovieDtoById(id);
         model.addAttribute("movie", movieDto);
+        String description = movieDto.getDescription().replace("\\n", "<br><br>");
+        model.addAttribute("description", description);
+
         List<Actorlist> roles = actorListService.getActorsByMovieId(id);
         model.addAttribute("roles", roles);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -79,10 +83,23 @@ public class MovieAppController {
 
     @GetMapping(value = "/actors/{id}")
     public String actorById(@PathVariable(name="id") Long id, Model model){
-        ActorDto actor = actorService.getActorById(id);
+        ActorDto actor = actorService.getActorDtoById(id);
         model.addAttribute("actor", actor);
+
         List<Actorlist> roles = actorListService.getMoviesByActorId(id);
         model.addAttribute("roles", roles);
+        boolean check = false;
+        Userportal user = getCurrentUser();
+        if (user != null) {
+            check = userService.isFavoriteActor(user.getId(), id);
+        }
+
+        model.addAttribute("isFavorite", check);
+
+        String description = actor.getDescription().replace("\\n", "<br><br>");
+        model.addAttribute("description", description);
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         model.addAttribute("birthDate", sdf.format(actor.getBirthdate()));
         return "actorPage";
@@ -92,16 +109,60 @@ public class MovieAppController {
 
     private Userportal getCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userService.loadUserByUsername(auth.getName());
+        if (auth != null && auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) return userService.loadUserByUsername(auth.getName());
+        else return null;
     }
 
-//    @PostMapping(value = "/actors/{id}/toggle")
-//    public String toggleFav(
-//            @PathVariable(name = "id") Long id,
-//            Authentication auth,
-//            RedirectAttributes redirectAttributes)
-//    {
-//        Userportal user = userService.loadUserByUsername(auth.getName());
-//        MovieDto movie = movieService.getMovieById(id);
-//    }
+    @PostMapping(value = "/actors/{id}/toggle")
+    public String toggleFavAct(
+            @PathVariable(name = "id") Long id,
+            Authentication auth,
+            RedirectAttributes redirectAttributes)
+    {
+        Userportal user = getCurrentUser();
+        if(user == null) return "redirect:/login";
+
+        if(userService.isFavoriteActor(user.getId(), id)) {
+            userService.deleteFavoriteActor(user.getId(), id);
+            redirectAttributes.addFlashAttribute("message", "Актер удален из избранного");
+        }
+        else{
+            Favoriteactor favoriteactor = new Favoriteactor();
+            favoriteactor.setUserportal(user);
+            favoriteactor.setActor(actorService.getActorById(id));
+            FavoriteactorId favActorId = new FavoriteactorId();
+            favActorId.setActorId(actorService.getActorById(id).getActorId());
+            favActorId.setUserId(user.getId());
+            favoriteactor.setId(favActorId);
+            userService.addFavoriteActor(favoriteactor);
+            redirectAttributes.addFlashAttribute("message", "Актер был добавлен в избранное");
+        }
+
+        return "redirect:/actors/" + id;
+    }
+
+
+    @PostMapping(value = "/movies/{id}/toggle")
+    public String toggleFavMov(
+            @PathVariable(name = "id") Long id)
+    {
+        Userportal user = getCurrentUser();
+        if(user == null) return "redirect:/login";
+
+        if(userService.isFavoriteMovie(user.getId(), id)) {
+            userService.deleteFavoriteMovie(user.getId(), id);
+        }
+        else{
+            Favoritemovie favoritemovie = new Favoritemovie();
+            favoritemovie.setUserportal(user);
+            favoritemovie.setMovie(movieService.getMovieById(id));
+            FavoritemovieId favMovId = new FavoritemovieId();
+            favMovId.setMovieId(movieService.getMovieById(id).getMovieId());
+            favMovId.setUserId(user.getId());
+            favoritemovie.setId(favMovId);
+            userService.addFavoriteMovie(favoritemovie);
+        }
+
+        return "redirect:/movies/" + id;
+    }
 }

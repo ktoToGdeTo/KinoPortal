@@ -8,16 +8,17 @@ import com.practice.movieapp.repository.FavoriteMovieRepository;
 import com.practice.movieapp.repository.UserPortalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserService implements UserDetailsService {
 
     private UserPortalRepository userPortalRepository;
@@ -41,6 +42,30 @@ public class UserService implements UserDetailsService {
 
     public List<Favoriteactor> getFavActors(Long id){
         return favoriteActorRepository.findAllFavActorsByUserId(id);
+    }
+
+    public boolean isFavoriteActor(Long userId, Long actorId){
+        return favoriteActorRepository.existsActorByUserportal_IdAndActor_ActorId(userId, actorId);
+    }
+
+    public void deleteFavoriteActor(Long userId, Long actorId){
+        favoriteActorRepository.deleteByUserportal_IdAndActor_ActorId(userId, actorId);
+    }
+
+    public void addFavoriteActor(Favoriteactor favoriteactor){
+        favoriteActorRepository.save(favoriteactor);
+    }
+
+    public boolean isFavoriteMovie(Long userId, Long movieId){
+        return favoriteMovieRepository.existsActorByUserportal_IdAndMovie_MovieId(userId, movieId);
+    }
+
+    public void deleteFavoriteMovie(Long userId, Long movieId){
+        favoriteMovieRepository.deleteByUserportal_IdAndMovie_MovieId(userId, movieId);
+    }
+
+    public void addFavoriteMovie(Favoritemovie favoritemovie){
+        favoriteMovieRepository.save(favoritemovie);
     }
 
 

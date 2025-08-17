@@ -50,7 +50,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> getAllMovies() {
-        List<Movie> movies = movieRepository.findAll();
+        List<Movie> movies = movieRepository.findAllByOrderByTitleAsc();
         return movies.stream().map((movie) -> MovieMapper.mapToMovieDto(movie))
                 .collect(Collectors.toList());
     }

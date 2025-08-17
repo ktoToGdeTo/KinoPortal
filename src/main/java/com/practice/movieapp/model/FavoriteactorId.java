@@ -15,10 +15,10 @@ import java.util.Objects;
 public class FavoriteactorId implements Serializable {
     private static final long serialVersionUID = -6197140395142819661L;
     @Column(name = "userid", nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "actorid", nullable = false)
-    private Integer actorId;
+    private Long actorId;
 
     @Override
     public boolean equals(Object o) {

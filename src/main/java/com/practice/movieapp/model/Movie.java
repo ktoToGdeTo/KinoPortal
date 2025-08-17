@@ -39,4 +39,7 @@ public class Movie {
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Actorlist> actorlists = new ArrayList<>();
 
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Favoritemovie> favoritemovies = new ArrayList<>();
+
 }

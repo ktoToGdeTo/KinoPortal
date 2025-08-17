@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body>
+    <div th:replace="~{navbar::navigation}"></div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+            <div class="row d-flex justify-content-between mb-5">
+                <div class="col-10">
+                    <h3> Привет, <span sec:authentication="name"></span></h3>
+                </div>
+                <div class="col-5" th:if="${not #lists.isEmpty(favoriteMovies)}">
+                    <h1>Любимые фильмы:</h1>
+                    <ul th:unless="${listIsEmpty}" class="list-group list-group-flush">
+                        <li th:each="item : ${favoriteMovies}" class="list-group-item">
+                            <a th:href="@{/movies/{id}(id=${item.movie.movieId})}" th:text="${item.movie.title}"
+                               class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-5" th:if="${not #lists.isEmpty(favoriteActors)}">
+                    <h1>Любимые актеры:</h1>
+                    <ul class="list-group list-group-flush">
+                        <li th:each="item : ${favoriteActors}" class="list-group-item">
+                            <a th:href="@{/actors/{id}(id=${item.actor.actorId})}" th:text="${item.actor.fullname}"
+                               class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+</html>

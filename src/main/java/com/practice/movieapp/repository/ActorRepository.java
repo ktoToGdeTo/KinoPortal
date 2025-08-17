@@ -11,4 +11,6 @@ import java.util.List;
 public interface ActorRepository extends JpaRepository<Actor, Long> {
 
     List<Actor> findAllByFullnameContainsIgnoreCase(String name);
+
+    List<Actor> findAllByOrderByFullnameAsc();
 }

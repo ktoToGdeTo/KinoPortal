@@ -11,6 +11,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findAllByTitleContainsIgnoreCase(String title);
 
+    List<Movie> findAllByOrderByTitleAsc();
+
     @Query("SELECT al.movie FROM Actorlist al where al.actor.actorId = :actorId")
     List<Movie> findMoviesByActorId(@Param("actorId") Long actorId);
 

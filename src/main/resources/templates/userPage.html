@@ -11,11 +11,12 @@
 
     <div class="row d-flex justify-content-center">
         <div class="col-10">
+            <div class="container-fluid">
+                <h3> Привет, <span sec:authentication="name"></span></h3>
+            </div>
             <div class="row d-flex justify-content-between mb-5">
-                <div class="col-10">
-                    <h3> Привет, <span sec:authentication="name"></span></h3>
-                </div>
-                <div class="col-5" th:if="${not #lists.isEmpty(favoriteMovies)}">
+
+            <div class="col-5" th:if="${not #lists.isEmpty(favoriteMovies)}">
                     <h1>Любимые фильмы:</h1>
                     <ul th:unless="${listIsEmpty}" class="list-group list-group-flush">
                         <li th:each="item : ${favoriteMovies}" class="list-group-item">

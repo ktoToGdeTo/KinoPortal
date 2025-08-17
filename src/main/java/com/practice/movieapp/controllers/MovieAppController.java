@@ -8,6 +8,7 @@ import com.practice.movieapp.service.ActorService;
 import com.practice.movieapp.service.MovieService;
 import com.practice.movieapp.service.impl.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -164,5 +165,10 @@ public class MovieAppController {
         }
 
         return "redirect:/movies/" + id;
+    }
+
+    @RequestMapping("/.well-known/appspecific/com.chrome.devtools.json")
+    public ResponseEntity<String> handleDevToolsJson() {
+        return ResponseEntity.notFound().build(); // 404
     }
 }

@@ -11,6 +11,10 @@
 <div class="card text-center mx-auto" style="width: 18rem;">
   <div class="card-body">
     <h2 class="card-title mb-4">Вход</h2>
+
+    <div th:if="${success}" th:text="${success}" class="alert alert-success"></div>
+
+    <div th:if="${error}" th:text="${error}" class="alert alert-danger"></div>
     <form th:action="@{/login}" method="post">
       <input type="text" name="username" placeholder="Имя пользователя" required class="form-control"> <br>
       <input type="password" name="password" placeholder="Пароль" required class="form-control"> <br>

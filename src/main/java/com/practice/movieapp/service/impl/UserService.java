@@ -36,6 +36,9 @@ public class UserService implements UserDetailsService {
         userPortalRepository.save(user);
     }
 
+    public boolean checkUser(String username){
+        return userPortalRepository.existsUserportalByUsername(username);
+    }
     public List<Favoritemovie> getFavMovies(Long id){
         return favoriteMovieRepository.findAllFavMoviesByUserId(id);
     }
